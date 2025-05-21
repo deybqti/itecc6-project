@@ -1,16 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Video Game Tracker</title>
-  <head>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-
-  </head>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
 </head>
 <body>
   <div id="root"></div>
+
+  <script>
+    const root = document.getElementById('root');
+
+    async function loadGames() {
+      try {
+        const response = await fetch('http://localhost:3000/games');
+        if (!response.ok) throw new Error('Failed to fetch games');
+        const games = await response.json();
+
+        root.innerHTML = '<h1>My Video Game Tracker</h1>';
+
+        const refreshBtn = document.createElement('button');
+        refreshBtn.textContent = 'Reload Games';
+        refreshBtn.onclick = loadGames;
+        root.appendChild(refreshBtn);
+
+        const list = document.createElement('ul');
+        list.style.listStyle = 'none';
+        list.style.padding = '0';
+
+        games.forEach(game => {
+          const li = document.createElement('li');
+          li.style.margin = '10px 0';
+          li.textContent = `${game.title} - ${game.platform} - Status: ${game.play_status}`;
+          list.appendChild(li);
+        });
+
+        root.appendChild(list);
+
+      } catch (error) {
+        root.innerHTML = `<p style="color:red;">${error.message}</p>`;
+      }
+    }
+
+    loadGames();
+  </script>
 </body>
 </html>

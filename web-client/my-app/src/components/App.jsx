@@ -7,9 +7,28 @@ const App = () => {
   const [games, setGames] = useState([]);
   const [filter, setFilter] = useState('');
 
-  const addGame = (game) => {
-    setGames([...games, game]);
-  };
+const addGame = async (game) => {
+  try {
+    const response = await fetch('http://localhost:5000/api/games', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(game),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to add game');
+    }
+
+    const savedGame = await response.json();
+    setGames([...games, savedGame]);
+  } catch (error) {
+    console.error('Error adding game:', error);
+    alert('Failed to fetch');
+  }
+};
+
 
   const updateGameStatus = (index, status) => {
     const updatedGames = [...games];
