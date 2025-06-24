@@ -2,6 +2,13 @@ import React from 'react';
 import StarRating from './StarRating';  
 
 const GameTable = ({ games, updateGameStatus, logPlayTime, rateGame, deleteGame }) => {
+  const formatTime = (seconds) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs}h ${mins}m ${secs}s`;
+  };
+
   return (
     <table>
       <thead>
@@ -21,32 +28,30 @@ const GameTable = ({ games, updateGameStatus, logPlayTime, rateGame, deleteGame 
           </tr>
         ) : (
           games.map((game, index) => (
-            <tr key={index}>
-              <td>{game.name}</td>
+            <tr key={game.id || index}>
+              <td>{game.title}</td>
               <td>{game.platform}</td>
               <td>
                 <select
-                  value={game.status}
+                  value={game.play_status || ''}
                   onChange={(e) => updateGameStatus(index, e.target.value)}
                 >
+                  <option value="Unplayed">Unplayed</option>
                   <option value="Playing">Playing</option>
                   <option value="Completed">Completed</option>
-                  <option value="Unplayed">Unplayed</option>
                   <option value="Abandoned">Abandoned</option>
                 </select>
               </td>
               <td>
-                <input
-                  type="number"
-                  value={game.playTime}
-                  onChange={(e) => logPlayTime(index, Number(e.target.value))}
-                  min="0"
-                />
+                {game.play_status === 'Playing' && (
+                  <span style={{ color: '#00ff00', fontWeight: 'bold' }}>▶ </span>
+                )}
+                {formatTime(game.hours_played || 0)}
               </td>
               <td>
                 <StarRating
-                  rating={game.rating}
-                  onRatingChange={(newRating) => rateGame(index, newRating)}  // Pass the new rating
+                  rating={game.rating || 0}
+                  onRatingChange={(newRating) => rateGame(index, newRating)}
                 />
               </td>
               <td>

@@ -11,7 +11,7 @@ function Signup() {
     e.preventDefault();
  
     alert('Account created!');
-    navigate('/login');
+    navigate('/');
   };
 
   return (
@@ -21,6 +21,7 @@ function Signup() {
         <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
         <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
         <button type="submit">Create Account</button>
+        <p>Already have an account? <a href="/">Login here</a></p>
       </form>
     </div>
   );

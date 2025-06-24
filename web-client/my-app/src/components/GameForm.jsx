@@ -9,8 +9,14 @@ const GameForm = ({ addGame }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newGame = { name, platform, status, rating, playTime: 0 };
-    addGame(newGame);  // Add the new game to the state
+    const newGame = { 
+      name, 
+      platform, 
+      status, 
+      rating, 
+      playTime: 0 
+    };
+    addGame(newGame);
     setName('');
     setPlatform('');
     setStatus('');
@@ -25,6 +31,7 @@ const GameForm = ({ addGame }) => {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          required
         />
       </div>
       <div>
@@ -33,11 +40,12 @@ const GameForm = ({ addGame }) => {
           type="text"
           value={platform}
           onChange={(e) => setPlatform(e.target.value)}
+          required
         />
       </div>
       <div>
         <label>Status</label>
-        <select value={status} onChange={(e) => setStatus(e.target.value)}>
+        <select value={status} onChange={(e) => setStatus(e.target.value)} required>
           <option value="">Select status</option>
           <option value="Unplayed">Unplayed</option>
           <option value="Playing">Playing</option>
